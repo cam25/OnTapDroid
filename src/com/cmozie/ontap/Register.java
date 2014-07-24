@@ -13,7 +13,7 @@ public class Register extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         
-        
+      
         
         
         
