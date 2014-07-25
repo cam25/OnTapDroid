@@ -28,7 +28,7 @@ public final class R {
     }
     public static final class id {
         public static final int TextView01=0x7f080001;
-        public static final int action_settings=0x7f080014;
+        public static final int action_settings=0x7f080015;
         public static final int button1=0x7f080011;
         public static final int checkBox1=0x7f080008;
         public static final int checkBox2=0x7f08000a;
@@ -38,6 +38,7 @@ public final class R {
         public static final int editText1=0x7f080004;
         public static final int editText2=0x7f080002;
         public static final int editText3=0x7f080012;
+        public static final int favoriteBrews=0x7f080014;
         public static final int imageView1=0x7f080000;
         public static final int login=0x7f080006;
         public static final int signUp=0x7f080005;

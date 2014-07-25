@@ -4,6 +4,8 @@ package com.cmozie.utilities;
 
 import com.cmozie.ontap.R;
 import com.cmozie.utilities.*;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +13,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import com.cmozie.*;
 import com.cmozie.fragmentclasses.*;
 
@@ -44,24 +49,38 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		return 4;
 	}
 	public class TasteGoodFragment extends Fragment {
+		ProgressDialog loading;
+		ListView goodBrews;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.tastegoodfragment, container, false);
-	         
+	        //View theList = rootView.findViewById(R.id.favoriteBrews);
+		      goodBrews = (ListView) rootView.findViewById(R.id.favoriteBrews);
+		      String [] allGoodBeers = new String [] {"Rebel IPA", "Boston Lager", "Snake Dog IPA", "Summer Shandy", "Blue Moon"};
+		      
+		      
+		      ArrayAdapter<String>beers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allGoodBeers);
+		      
+		      goodBrews.setAdapter(beers);
 	        return rootView;
 	    }
 		
 
 	}
 	public class TasteBadFragment extends Fragment {
+		
+		
+		
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.tastebadfragment, container, false);
 	         
+	        
+	     
 	        return rootView;
 	    }
 	}
