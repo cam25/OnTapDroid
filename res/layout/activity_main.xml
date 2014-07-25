@@ -63,16 +63,6 @@
     </EditText>
 
     <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_below="@+id/TextView01"
-        android:fontFamily="Helvetica"
-        android:text="Log In" />
-
-    <Button
         android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,5 +70,15 @@
         android:layout_alignRight="@+id/login"
         android:layout_below="@+id/login"
         android:text="Sign Up" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_alignRight="@+id/editText2"
+        android:layout_below="@+id/TextView01"
+        android:fontFamily="Helvetica"
+        android:text="Log In" />
 
 </RelativeLayout>
