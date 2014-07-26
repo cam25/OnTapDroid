@@ -71,7 +71,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	}
 	public class TasteBadFragment extends Fragment {
 		
-		
+		ListView badBrews;
 		
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +80,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	        View rootView = inflater.inflate(R.layout.tastebadfragment, container, false);
 	         
 	        
-	     
+		      badBrews = (ListView) rootView.findViewById(R.id.badBrews);
+String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel Adams Cream Stout", "Harp", "Four Loco"};
+		      
+		      
+		      ArrayAdapter<String>badBeers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allBadBeers);
+		      
+		      badBrews.setAdapter(badBeers);
 	        return rootView;
 	    }
 	}
@@ -98,12 +104,20 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
 	}
 	public class BeertionaryFragment extends Fragment {
+		
+		ListView searchedBrews;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.beertionaryfragment, container, false);
-	         
+		      searchedBrews = (ListView) rootView.findViewById(R.id.searchedBrews);
+		      String [] allSearchedBrews = new String [] {"Boston Lager", "Rebel IPA", "Cream Stout", "Irish Red", "Summer Ale"};
+		      		      
+		      		      
+		      		      ArrayAdapter<String>searches = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allSearchedBrews);
+		      		      
+		      		      searchedBrews.setAdapter(searches);
 	        return rootView;
 	    }
 
