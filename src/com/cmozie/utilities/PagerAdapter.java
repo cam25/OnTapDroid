@@ -2,10 +2,14 @@ package com.cmozie.utilities;
 
 
 
+import com.cmozie.ontap.MoreDetails;
 import com.cmozie.ontap.R;
 import com.cmozie.utilities.*;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +17,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cmozie.*;
 import com.cmozie.fragmentclasses.*;
@@ -92,13 +101,99 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 	}
 	
 	public class SuggestionsFragment extends Fragment {
-		
+		ImageButton tasteGoodButn;
+		ImageButton tasteBadButn;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.suggestionsfragment, container, false);
 	         
+	        tasteGoodButn = (ImageButton) rootView.findViewById(R.id.tasteGood);
+	        tasteBadButn = (ImageButton) rootView.findViewById(R.id.tasteBad);
+	        
+	        tasteGoodButn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
+					        getActivity());
+
+					// Setting Dialog Title
+					alertDialog2.setTitle("Taste Good!");
+
+					// Setting Dialog Message
+					alertDialog2.setMessage("Did you like this brew?");
+
+				
+					alertDialog2.setPositiveButton("YES",
+					        new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int which) {
+					                // Write your code here to execute after dialog
+					                Toast.makeText(getActivity(),
+					                        "You clicked on YES", Toast.LENGTH_SHORT)
+					                        .show();
+					            }
+					        });
+					// Setting Negative "NO" Btn
+					alertDialog2.setNegativeButton("NO",
+					        new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int which) {
+					                // Write your code here to execute after dialog
+					                Toast.makeText(getActivity(),
+					                        "You clicked on NO", Toast.LENGTH_SHORT)
+					                        .show();
+					                dialog.cancel();
+					            }
+					        });
+
+					// Showing Alert Dialog
+					alertDialog2.show();
+				}
+			});
+	        
+	        
+	        tasteBadButn.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
+					        getActivity());
+
+					// Setting Dialog Title
+					alertDialog2.setTitle("Taste Bad!");
+
+					// Setting Dialog Message
+					alertDialog2.setMessage("Did This brew taste bad?");
+
+				
+					alertDialog2.setPositiveButton("YES",
+					        new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int which) {
+					                // Write your code here to execute after dialog
+					                Toast.makeText(getActivity(),
+					                        "You clicked on YES", Toast.LENGTH_SHORT)
+					                        .show();
+					            }
+					        });
+					// Setting Negative "NO" Btn
+					alertDialog2.setNegativeButton("NO",
+					        new DialogInterface.OnClickListener() {
+					            public void onClick(DialogInterface dialog, int which) {
+					                // Write your code here to execute after dialog
+					                Toast.makeText(getActivity(),
+					                        "You clicked on NO", Toast.LENGTH_SHORT)
+					                        .show();
+					                dialog.cancel();
+					            }
+					        });
+
+					// Showing Alert Dialog
+					alertDialog2.show();
+				}
+			});
 	        return rootView;
 	    }
 
@@ -118,6 +213,18 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 		      		      ArrayAdapter<String>searches = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allSearchedBrews);
 		      		      
 		      		      searchedBrews.setAdapter(searches);
+		      		      
+		      		      searchedBrews.setOnItemClickListener(new OnItemClickListener() {
+		      		    	  
+		      		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
+		      		       {
+
+		      		           Intent n = new Intent(getActivity(), MoreDetails.class);
+		      		           n.putExtra("position", position);
+		      		           startActivity(n);
+		      		       }
+						});
+		      		     
 	        return rootView;
 	    }
 

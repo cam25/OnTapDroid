@@ -14,75 +14,76 @@
         android:src="@drawable/appicon2" />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/imageView1"
-        android:layout_marginRight="48dp"
-        android:layout_marginTop="21dp"
-        android:text="Preferred Username"
-        android:textColor="#FFFFFF"
-        android:fontFamily="Helvetica"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:ems="10" />
-
-    <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/usernameSignup"
         android:text="Preferred Password"
         android:textColor="#FFFFFF"
         android:fontFamily="Helvetica"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/passwordSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
+        android:layout_alignLeft="@+id/usernameSignup"
         android:layout_below="@+id/textView2"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/usernameSignup"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="23dp"
+        android:fontFamily="Helvetica"
+        android:text="Preferred Username"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_centerHorizontal="true"
-        android:text="Email Address"
-        android:textColor="#FFFFFF"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_below="@+id/passwordSignup"
         android:fontFamily="Helvetica"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="Email Address"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/usernameSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_below="@+id/textView3"
-        android:ems="10" >
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/editText3"
-        
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignRight="@+id/emailSignup"
+        android:layout_below="@+id/emailSignup"
         android:text="Sign Up" />
+
+    <EditText
+        android:id="@+id/emailSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordSignup"
+        android:layout_below="@+id/textView3"
+        android:ems="10" />
 
 </RelativeLayout>

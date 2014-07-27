@@ -1,6 +1,7 @@
 package com.cmozie.ontap;
 
 import com.cmozie.utilities.PagerAdapter;
+import com.parse.ParseUser;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -9,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 public class TasteGood extends FragmentActivity implements ActionBar.TabListener {
 	
@@ -30,7 +32,8 @@ public class TasteGood extends FragmentActivity implements ActionBar.TabListener
         viewPager.setAdapter(pAdapter);
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        
+       // actionBar.setTitle("");
+        actionBar.setDisplayShowTitleEnabled(false);
         for (String tab_name : tabs) {
         	actionBar.addTab(actionBar.newTab().setText(tab_name)
         			.setTabListener(this));

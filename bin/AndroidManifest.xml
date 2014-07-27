@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/appicon2"
+        android:icon="@drawable/ontaplogo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -25,8 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      
         <activity android:name="TasteGood"></activity>
         <activity android:name="BeerPreferences"></activity>
+        <activity android:name="Register"></activity>
+        <activity android:name="MoreDetails"></activity>
     </application>
 
 </manifest>
