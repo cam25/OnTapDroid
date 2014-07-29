@@ -57,25 +57,24 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:src="@drawable/ontaplogo" />
+
     <Button
         android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/login"
-        android:layout_alignRight="@+id/login"
-        android:layout_below="@+id/login"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/password"
         android:text="Sign Up" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/signUp"
         android:layout_alignLeft="@+id/username"
         android:layout_alignRight="@+id/username"
-        android:layout_below="@+id/TextView01"
         android:fontFamily="Helvetica"
         android:text="Log In" />
-
-    
 
 </RelativeLayout>

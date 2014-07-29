@@ -1,6 +1,7 @@
 package com.cmozie.ontap;
 
 import com.cmozie.utilities.PagerAdapter;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import android.app.ActionBar;
@@ -24,6 +25,7 @@ public class TasteGood extends FragmentActivity implements ActionBar.TabListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tastegood);
+        
         
         viewPager = (ViewPager) findViewById(R.id.theViewPager);
         actionBar = getActionBar();

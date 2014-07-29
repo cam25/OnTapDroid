@@ -2,7 +2,11 @@ package com.cmozie.utilities;
 
 
 
+
+import java.util.List;
+
 import com.cmozie.ontap.MoreDetails;
+
 import com.cmozie.ontap.R;
 import com.cmozie.utilities.*;
 
@@ -14,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +28,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cmozie.*;
 import com.cmozie.fragmentclasses.*;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
@@ -70,6 +81,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		      String [] allGoodBeers = new String [] {"Rebel IPA", "Boston Lager", "Snake Dog IPA", "Summer Shandy", "Blue Moon"};
 		      
 		      
+		          
 		      ArrayAdapter<String>beers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allGoodBeers);
 		      
 		      goodBrews.setAdapter(beers);
@@ -103,20 +115,33 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 	public class SuggestionsFragment extends Fragment {
 		ImageButton tasteGoodButn;
 		ImageButton tasteBadButn;
+		public ParseObject onTapData;
+		public  TextView beerLabel;
+		public  ParseUser usersName;
+		public  String userString;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.suggestionsfragment, container, false);
 	         
+	        beerLabel = (TextView) rootView.findViewById(R.id.beerNameLabel);
 	        tasteGoodButn = (ImageButton) rootView.findViewById(R.id.tasteGood);
 	        tasteBadButn = (ImageButton) rootView.findViewById(R.id.tasteBad);
-	        
+	         usersName = ParseUser.getCurrentUser();
+	         userString = usersName.getUsername().toString();
+	         Log.i("Logged in as...", userString);
+	         Log.i("beerName", beerLabel.getText().toString());
+	       
+	         
 	        tasteGoodButn.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					
+					  
+					  
 					AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
 					        getActivity());
 
@@ -134,6 +159,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 					                Toast.makeText(getActivity(),
 					                        "You clicked on YES", Toast.LENGTH_SHORT)
 					                        .show();
+					               
 					            }
 					        });
 					// Setting Negative "NO" Btn

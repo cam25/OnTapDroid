@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.cmozie.utilities.PagerAdapter.TasteGoodFragment;
 import com.cmozie.utilities.UserData;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser != null) {
                 // Send logged in users to Welcome.class
-                Intent intent = new Intent(MainActivity.this, BeerPreferences.class);
+                Intent intent = new Intent(MainActivity.this, TasteGood.class);
                 startActivity(intent);
                 finish();
             } 
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
 				//startActivity(intent);
 				usernameString = username.getText().toString();
 				passwordString = password.getText().toString();
+				
 				
 				ParseUser.logInInBackground(usernameString, passwordString, new LogInCallback() {
 					
