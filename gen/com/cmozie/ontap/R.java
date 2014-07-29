@@ -42,7 +42,7 @@ public final class R {
         public static final int TextView01=0x7f080000;
         public static final int action_settings=0x7f080021;
         public static final int badBrews=0x7f08001e;
-        public static final int beerName=0x7f080007;
+        public static final int beerNameText=0x7f080007;
         public static final int button1=0x7f080013;
         public static final int checkBox1=0x7f080009;
         public static final int checkBox2=0x7f08000b;

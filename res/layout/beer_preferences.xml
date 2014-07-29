@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/beerName"
+        android:id="@+id/beerNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/beerName"
+        android:layout_below="@+id/beerNameText"
         android:fontFamily="Helvetica"
         android:text="Whats your favorite Style?"
         android:textAppearance="?android:attr/textAppearanceLarge"

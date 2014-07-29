@@ -21,7 +21,7 @@ public class BeerPreferences extends Activity {
 	private ParseObject OnTapParseData;
 	Button next;
 	EditText beerName;
-	String beerNameString;
+	public String beerNameString;
 	public String userString;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class BeerPreferences extends Activity {
         setContentView(R.layout.beer_preferences);
         
         next = (Button) findViewById(R.id.nextButton);
-        beerName = (EditText) findViewById(R.id.beerName);
+        beerName = (EditText) findViewById(R.id.beerNameText);
         
         beerNameString = beerName.getText().toString();
         
@@ -46,7 +46,7 @@ public class BeerPreferences extends Activity {
         userString = usersName.getUsername().toString();
         Log.i("Logged in as  - ", userString);
         
-        beerName.setText("TESTING");
+        
         
         
         next.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +55,8 @@ public class BeerPreferences extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//OnTapParseData.put("beerName", beerNameString);
-		        //OnTapParseData.saveInBackground();
+			OnTapParseData.put("beerName", beerNameString);
+		        OnTapParseData.saveInBackground();
 				 
 				Intent intent = new Intent(getApplicationContext(), TasteGood.class);
 				startActivity(intent);
