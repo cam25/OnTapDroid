@@ -85,6 +85,16 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		      ArrayAdapter<String>beers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allGoodBeers);
 		      
 		      goodBrews.setAdapter(beers);
+		      goodBrews.setOnItemClickListener(new OnItemClickListener() {
+  		    	  
+   		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
+   		       {
+
+   		           Intent n = new Intent(getActivity(), MoreDetails.class);
+   		           n.putExtra("position", position);
+   		           startActivity(n);
+   		       }
+				});
 	        return rootView;
 	    }
 		
@@ -108,6 +118,17 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 		      ArrayAdapter<String>badBeers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allBadBeers);
 		      
 		      badBrews.setAdapter(badBeers);
+		      
+		      badBrews.setOnItemClickListener(new OnItemClickListener() {
+  		    	  
+   		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
+   		       {
+
+   		           Intent n = new Intent(getActivity(), MoreDetails.class);
+   		           n.putExtra("position", position);
+   		           startActivity(n);
+   		       }
+				});
 	        return rootView;
 	    }
 	}
@@ -152,23 +173,22 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 					alertDialog2.setMessage("Did you like this brew?");
 
 				
-					alertDialog2.setPositiveButton("YES",
+					alertDialog2.setPositiveButton("Yes",
 					        new DialogInterface.OnClickListener() {
 					            public void onClick(DialogInterface dialog, int which) {
 					                // Write your code here to execute after dialog
 					                Toast.makeText(getActivity(),
-					                        "You clicked on YES", Toast.LENGTH_SHORT)
+					                        "This beer will be added to the taste good beer section in the database.", Toast.LENGTH_SHORT)
 					                        .show();
 					               
 					            }
 					        });
-					// Setting Negative "NO" Btn
 					alertDialog2.setNegativeButton("NO",
 					        new DialogInterface.OnClickListener() {
 					            public void onClick(DialogInterface dialog, int which) {
 					                // Write your code here to execute after dialog
 					                Toast.makeText(getActivity(),
-					                        "You clicked on NO", Toast.LENGTH_SHORT)
+					                        "Please select the taste bad button to add to your beers that you didnt like..", Toast.LENGTH_SHORT)
 					                        .show();
 					                dialog.cancel();
 					            }
@@ -176,6 +196,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 
 					// Showing Alert Dialog
 					alertDialog2.show();
+					
 				}
 			});
 	        
@@ -200,7 +221,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 					            public void onClick(DialogInterface dialog, int which) {
 					                // Write your code here to execute after dialog
 					                Toast.makeText(getActivity(),
-					                        "You clicked on YES", Toast.LENGTH_SHORT)
+					                        "This beer will be added to the bad tasting beers section in the database", Toast.LENGTH_SHORT)
 					                        .show();
 					            }
 					        });
@@ -210,7 +231,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 					            public void onClick(DialogInterface dialog, int which) {
 					                // Write your code here to execute after dialog
 					                Toast.makeText(getActivity(),
-					                        "You clicked on NO", Toast.LENGTH_SHORT)
+					                        "Please select the taste good button to add to your beers that taste good.", Toast.LENGTH_SHORT)
 					                        .show();
 					                dialog.cancel();
 					            }
