@@ -3,6 +3,7 @@ package com.cmozie.utilities;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cmozie.ontap.MoreDetails;
@@ -71,17 +72,33 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	public class TasteGoodFragment extends Fragment {
 		ProgressDialog loading;
 		ListView goodBrews;
+		public ArrayList<String> foos;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
-	 
+			foos = new ArrayList<String>();
 	        View rootView = inflater.inflate(R.layout.tastegoodfragment, container, false);
 	        //View theList = rootView.findViewById(R.id.favoriteBrews);
 		      goodBrews = (ListView) rootView.findViewById(R.id.favoriteBrews);
 		      String [] allGoodBeers = new String [] {"Rebel IPA", "Boston Lager", "Snake Dog IPA", "Summer Shandy", "Blue Moon"};
 		      
-		      
-		          
+		      ParseQuery<ParseObject> query = ParseQuery.getQuery("OnTapData");
+		      query.orderByDescending("beerName");
+		      query.findInBackground(new FindCallback<ParseObject>() {
+		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
+		              if (e == null) {
+		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
+		            		  String brews = tasteGoodBrews.get(i).getString("beerName");
+		            		  foos.add(brews);
+		            		  }
+		                  Log.i("score", "Retrieved " + tasteGoodBrews.size() + " scores");
+		                  
+		              } else {
+		                  Log.d("score", "Error: " + e.getMessage());
+		              }
+		          }
+		      });
+		       
 		      ArrayAdapter<String>beers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allGoodBeers);
 		      
 		      goodBrews.setAdapter(beers);
@@ -95,8 +112,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
    		           startActivity(n);
    		       }
 				});
+		      
+		    
 	        return rootView;
 	    }
+		
+		
 		
 
 	}
