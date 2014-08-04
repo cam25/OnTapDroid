@@ -120,10 +120,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
    		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
    		       {
    		    		
-
+   		    		 
    		           Intent n = new Intent(getActivity(), MoreDetails.class);
    		           
-   		           
+   		           Object obj = arg0.getItemAtPosition(position);
+   		           String name = obj.toString();
+   		           Log.i("obj", name);
+   		           n.putExtra("beerName", name);
    		           n.putExtra("position", position);
    		           startActivity(n);
    		       }

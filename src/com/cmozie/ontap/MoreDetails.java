@@ -40,8 +40,13 @@ public class MoreDetails extends Activity {
         tasteGood = (ImageButton)findViewById(R.id.tasteGoodButn);
         tasteBad = (ImageButton)findViewById(R.id.tasteBad);
         beerDescription = (TextView)findViewById(R.id.beerDescription);
+        Bundle extras = getIntent().getExtras();
         
-        //beerLabel.setText("Boston Lager");
+        if (extras != null) {
+			beerLabel.setText(extras.getString("beerName"));
+			
+		}
+        beerLabel.setText("Boston Lager");
         tasteGood.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -66,13 +71,13 @@ public class MoreDetails extends Activity {
 			}
 		});
         
-        getApiResults(beerName);
+        getApiResults("Boston Lager");
         
     }
 	
 	public  void getApiResults(String beer){
 
-		String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"/?description/?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+		String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
 
 
 
@@ -89,10 +94,11 @@ Log.i("query", queryString);
 				queryString = "";
 			}
 
-			 baseUrl = "http://api.brewerydb.com/v2/search/?q="+queryString+"?hasLabels=Y&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+			 baseUrl = "http://api.brewerydb.com/v2/search/?q="+queryString+"&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
 			URL finalURL;
 					try {
 
+						Log.i("baseUrl", baseUrl);
 				 finalURL = new URL(baseUrl);
 				 //finalURL2 = new URL(query);
 				 AsyncRequest queryRequest = new AsyncRequest();
@@ -105,7 +111,7 @@ Log.i("query", queryString);
 
 			} catch (Exception e) {
 				// TODO: handle exception
-				Log.i("BAD URL", "URL MALFORMED");
+				Log.i("BAD URL", e.toString());
 			}
 
 
