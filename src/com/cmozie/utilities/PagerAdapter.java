@@ -72,7 +72,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	public class TasteGoodFragment extends Fragment {
 		ProgressDialog loading;
 		ListView goodBrews;
+		public String brews;
 		public ArrayList<String> foos;
+		public ArrayAdapter<String>beers;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
@@ -88,26 +90,40 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
 		              if (e == null) {
 		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
-		            		  String brews = tasteGoodBrews.get(i).getString("beerName");
+		            		brews = tasteGoodBrews.get(0).getString("beerName");
+		            		
+		            		
 		            		  foos.add(brews);
-		            		  }
+		            		  
+		            		  
+		            		 
+		            		  
+		        		     
+
+		            	  }
+		            	  Log.i("brews", brews);
 		                  Log.i("score", "Retrieved " + tasteGoodBrews.size() + " scores");
-		                  
+		                  beers = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,foos);
+		    		      
+		    		      goodBrews.setAdapter(beers);
 		              } else {
 		                  Log.d("score", "Error: " + e.getMessage());
 		              }
 		          }
 		      });
-		       
-		      ArrayAdapter<String>beers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allGoodBeers);
 		      
-		      goodBrews.setAdapter(beers);
+		      
+		       Log.i("foos size ", foos.size() + " items in array");
+		    
 		      goodBrews.setOnItemClickListener(new OnItemClickListener() {
   		    	  
    		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
    		       {
+   		    		
 
    		           Intent n = new Intent(getActivity(), MoreDetails.class);
+   		           
+   		           
    		           n.putExtra("position", position);
    		           startActivity(n);
    		       }
