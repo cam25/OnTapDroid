@@ -64,18 +64,16 @@
         android:id="@+id/tasteGoodButn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/beerNameMore"
-        android:layout_below="@+id/beerDescription"
-        android:layout_marginLeft="37dp"
+        android:layout_alignTop="@+id/tasteBad"
+        android:layout_toLeftOf="@+id/textView3"
         android:src="@drawable/beer" />
 
     <ImageButton
         android:id="@+id/tasteBad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tasteGoodButn"
-        android:layout_alignRight="@+id/textView4"
-        android:layout_marginRight="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/textView3"
         android:src="@drawable/tastesbad" />
 
 </RelativeLayout>

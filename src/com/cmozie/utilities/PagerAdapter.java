@@ -86,19 +86,18 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		      
 		      ParseQuery<ParseObject> query = ParseQuery.getQuery("OnTapData");
 		      query.orderByDescending("beerName");
+		     
 		      query.findInBackground(new FindCallback<ParseObject>() {
 		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
 		              if (e == null) {
 		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
-		            		brews = tasteGoodBrews.get(0).getString("beerName");
+		            		brews = tasteGoodBrews.get(i).getString("beerName");
 		            		
 		            		
 		            		  foos.add(brews);
 		            		  
 		            		  
-		            		 
 		            		  
-		        		     
 
 		            	  }
 		            	  Log.i("brews", brews);
@@ -140,6 +139,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		
 
 	}
+	
+	
 	public class TasteBadFragment extends Fragment {
 		
 		ListView badBrews;
@@ -188,7 +189,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 	         
 	        beerLabel = (TextView) rootView.findViewById(R.id.beerNameLabel);
 	        tasteGoodButn = (ImageButton) rootView.findViewById(R.id.tasteGood);
-	        tasteBadButn = (ImageButton) rootView.findViewById(R.id.tasteBad);
+	        tasteBadButn = (ImageButton) rootView.findViewById(R.id.tasteBadButton);
 	         usersName = ParseUser.getCurrentUser();
 	         userString = usersName.getUsername().toString();
 	         Log.i("Logged in as...", userString);

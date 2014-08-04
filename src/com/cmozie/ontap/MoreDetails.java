@@ -3,6 +3,7 @@ package com.cmozie.ontap;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,11 +43,11 @@ public class MoreDetails extends Activity {
         beerDescription = (TextView)findViewById(R.id.beerDescription);
         Bundle extras = getIntent().getExtras();
         
-        if (extras != null) {
+    
 			beerLabel.setText(extras.getString("beerName"));
-			
-		}
-        beerLabel.setText("Boston Lager");
+			 getApiResults(beerLabel.getText().toString());
+		
+        //beerLabel.setText("Boston Lager");
         tasteGood.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -71,13 +72,13 @@ public class MoreDetails extends Activity {
 			}
 		});
         
-        getApiResults("Boston Lager");
+       
         
     }
 	
 	public  void getApiResults(String beer){
 
-		String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+		String baseUrl = "https://api.brewerydb.com/v2/search/?q="+ beer +"?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
 
 
 
@@ -94,7 +95,7 @@ Log.i("query", queryString);
 				queryString = "";
 			}
 
-			 baseUrl = "http://api.brewerydb.com/v2/search/?q="+queryString+"&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+			 baseUrl = "https://api.brewerydb.com/v2/search/?q="+queryString+"&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
 			URL finalURL;
 					try {
 
@@ -127,7 +128,7 @@ Log.i("query", queryString);
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			loading = new ProgressDialog(getApplicationContext());
+			loading = new ProgressDialog(MoreDetails.this);
 			loading.setMessage("Getting Info...");
 			loading.setIndeterminate(false);
 			loading.setCancelable(true);
@@ -157,48 +158,41 @@ Log.i("query", queryString);
 
 			try {
 				JSONObject json = new JSONObject(result);
-				JSONObject data = json.getJSONObject("data");
+				//JSONObject data = json.getJSONObject("data");
+				JSONArray data = json.getJSONArray("data");
+				
+				//JSONObject labels = data.getJSONObject("labels");
+				for (int i = 0; i < data.length(); i++) {
+					
+					JSONObject firstDataset = data.getJSONObject(0);
+					
+					if (firstDataset.has("name")) {
+						beerNam = firstDataset.getString("name");
+						beerLabel.setText(beerNam);
+					}
+					if (firstDataset.has("description")) {
+						beerDescriptionString = firstDataset.getString("description");
+						beerDescription.setText(beerDescriptionString);
+					}else if (firstDataset.has("style")) {
+
+						JSONObject style = firstDataset.getJSONObject("style");
+
+						String styleDescription = style.getString("description");
 
 
-				JSONObject labels = data.getJSONObject("labels");
+						Log.i("Style", styleDescription);
+						beerDescription.setText(styleDescription);
 
-				// url = new URL(labels.getString("large"));
-				Log.i("WTDURL", result);
+						}else{
 
-				if (data.has("name")) {
+							beerDescription.setText("No Description Available");
 
-					beerNam = data.getString("name");
-					beerLabel.setText(beerNam);
+					}
 				}
-				// TODO Auto-generated method stub
-				//Log.i("URL", result);
+				
+			
 
-				if (data.has("description")) {
-					beerDescriptionString = data.getString("description");
-					beerDescription.setText(beerDescriptionString);
-				}else if (data.has("style")) {
-
-				JSONObject style = data.getJSONObject("style");
-
-				String styleDescription = style.getString("description");
-
-
-				Log.i("Style", styleDescription);
-				beerDescription.setText(styleDescription);
-
-				}else{
-
-					beerDescription.setText("No Description Available");
-
-			}
-
-				if (labels.has("large")) {
-					//ImageRequest image = new ImageRequest();
-					//image.execute(url);
-
-				}
-
-				Log.i("beer", beerNam);
+			loading.dismiss();
 			} catch (JSONException e) {
 				// TODO: handle exception
 
