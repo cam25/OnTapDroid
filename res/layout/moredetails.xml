@@ -3,37 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
     android:background="#b7b7b7">
-
-    <TextView
+ <TextView
         android:id="@+id/beerNameMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text=""
+        android:text="Test"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/beerNameMore"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/boston" />
-
+    
     <TextView
         android:id="@+id/beerDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tasteBad"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/abvText"
         android:layout_marginTop="20dp"
-        android:text="Description of the brew goes here and will detail the beer&apos;s taste and some ingredients of the beer."
+        android:maxLines="20"
+        android:scrollbars="vertical"
+        android:text="t"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/breweryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/beerDescription"
@@ -42,7 +35,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/abvText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -50,9 +43,8 @@
         android:layout_marginTop="18dp"
         android:text="ABV:4.5%"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textView4"
+<TextView
+        android:id="@+id/styleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/beerDescription"
@@ -65,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tasteBad"
-        android:layout_toLeftOf="@+id/textView3"
+        android:layout_toLeftOf="@+id/breweryText"
         android:src="@drawable/beer" />
 
     <ImageButton
@@ -73,7 +65,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/textView3"
+        android:layout_toRightOf="@+id/breweryText"
         android:src="@drawable/tastesbad" />
+
+   
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beerNameMore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/boston" />
+
+    
 
 </RelativeLayout>

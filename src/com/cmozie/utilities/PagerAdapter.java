@@ -3,8 +3,15 @@ package com.cmozie.utilities;
 
 
 
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.cmozie.ontap.MoreDetails;
 
@@ -15,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -83,24 +91,32 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	        //View theList = rootView.findViewById(R.id.favoriteBrews);
 		      goodBrews = (ListView) rootView.findViewById(R.id.favoriteBrews);
 		      String [] allGoodBeers = new String [] {"Rebel IPA", "Boston Lager", "Snake Dog IPA", "Summer Shandy", "Blue Moon"};
+		     // ParseUser currentUser = ParseUser.getCurrentUser();
+		      //if (currentUser != null) {
+		        // do stuff with the user
 		      
-		      ParseQuery<ParseObject> query = ParseQuery.getQuery("OnTapData");
-		      query.orderByDescending("beerName");
+		    //else if the user already has registered send them to the preference class
+	            ParseUser currentUser = ParseUser.getCurrentUser();
+	            if (currentUser != null) { 
+	            	
+	            	Log.i("test", currentUser.getUsername());
+		      ParseQuery<ParseObject> query = ParseQuery.getQuery("TasteGood");
+		      query.whereEqualTo("userName", currentUser.getUsername());
 		     
 		      query.findInBackground(new FindCallback<ParseObject>() {
 		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
 		              if (e == null) {
 		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
-		            		brews = tasteGoodBrews.get(i).getString("beerName");
+		            		brews = tasteGoodBrews.get(i).getString("beerID");
 		            		
-		            		
+		            		//Log.i("tastegood ", tasteGoodBrews.toString());
 		            		  foos.add(brews);
 		            		  
 		            		  
 		            		  
 
 		            	  }
-		            	  Log.i("brews", brews);
+		            	  //Log.i("brews", brews);
 		                  Log.i("score", "Retrieved " + tasteGoodBrews.size() + " scores");
 		                  beers = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,foos);
 		    		      
@@ -126,11 +142,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
    		           String name = obj.toString();
    		           Log.i("obj", name);
    		           n.putExtra("beerName", name);
+   		           
    		           n.putExtra("position", position);
    		           startActivity(n);
    		       }
 				});
-		      
+		      }
 		    
 	        return rootView;
 	    }
@@ -144,21 +161,58 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	public class TasteBadFragment extends Fragment {
 		
 		ListView badBrews;
-		
+		public ArrayAdapter<String>beers2;
+		public ArrayList<String> foos2;
+		public String brews2;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.tastebadfragment, container, false);
 	         
-	        
+	        foos2 = new ArrayList<String>();
 		      badBrews = (ListView) rootView.findViewById(R.id.badBrews);
 String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel Adams Cream Stout", "Harp", "Four Loco"};
 		      
+		ParseUser currentUser = ParseUser.getCurrentUser();
+				if (currentUser != null) { 
+	
+		Log.i("test", currentUser.getUsername());
+			ParseQuery<ParseObject> query = ParseQuery.getQuery("TasteBad");
+				query.whereEqualTo("userName", currentUser.getUsername());
+
+				query.findInBackground(new FindCallback<ParseObject>() {
+			          public void done(List<ParseObject> tasteBadBrews, ParseException e) {
+			              if (e == null) {
+			            	  for (int i=0; i< tasteBadBrews.size(); i++){
+			            		brews2 = tasteBadBrews.get(i).getString("beerID");
+			            		
+			            		
+			            		  foos2.add(brews2);
+			            		  
+			            		  Log.i("tastebad", tasteBadBrews.toString());
+				              } 
+			            	  Log.i("score", "Retrieved " + tasteBadBrews.size() + " scores");
+			            	  
+			            	  
+			                  beers2 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,foos2);
+			    		      
+			                  
+			                  
+			    		      badBrews.setAdapter(beers2);
+			              }else {
+			                  Log.d("score", "Error: " + e.getMessage());
+			              }
+			          
+			              
+			              }
+				      });
+			            		  
+				
+				}
+		      //ArrayAdapter<String>badBeers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allBadBeers);
 		      
-		      ArrayAdapter<String>badBeers = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allBadBeers);
-		      
-		      badBrews.setAdapter(badBeers);
+		      //badBrews.setAdapter(badBeers);
 		      
 		      badBrews.setOnItemClickListener(new OnItemClickListener() {
   		    	  
@@ -287,8 +341,12 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 
 	}
 	public class BeertionaryFragment extends Fragment {
-		
+
+public  HashMap<String, String> map;
+public  List<Map<String,String>> dataArray;
 		ListView searchedBrews;
+		
+		public Button searchButton;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
@@ -298,6 +356,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 		      String [] allSearchedBrews = new String [] {"Boston Lager", "Rebel IPA", "Cream Stout", "Irish Red", "Summer Ale"};
 		      		      
 		      		      
+		      
 		      		      ArrayAdapter<String>searches = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allSearchedBrews);
 		      		      
 		      		      searchedBrews.setAdapter(searches);
@@ -315,6 +374,190 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 		      		     
 	        return rootView;
 	    }
+		
+		public class SearchAsyncTask extends AsyncTask<URL, Void, String>{
+			
+			ProgressDialog progressIndicator;
+			
+			/* (non-Javadoc)
+			 * @see android.os.AsyncTask#onPreExecute()
+			 */
+			protected void onPreExecute() {
+				// TODO Auto-generated method stub
+				super.onPreExecute();
+				
+				
+				progressIndicator = new ProgressDialog(getActivity());
+				progressIndicator.setMessage("Getting Info...");
+				progressIndicator.setIndeterminate(false);
+				progressIndicator.setCancelable(true);
+				progressIndicator.show();
+			}
+
+			/* (non-Javadoc)
+			 * @see android.os.AsyncTask#doInBackground(Params[])
+			 */
+			protected String doInBackground(URL... urls) {
+				// TODO Auto-generated method stub
+				String reply = "";
+				for (URL url : urls) {
+				reply = Network.URLStringResponse(url);	
+				}
+				return reply;
+			}
+
+			/* (non-Javadoc)
+			 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+			 */
+			protected void onPostExecute(String result) {
+				// TODO Auto-generated method stub
+				
+				
+				
+				progressIndicator.dismiss();
+				try {
+					JSONObject json = new JSONObject(result);
+					JSONArray data = json.getJSONArray("data");
+					//JSONObject label =;
+					dataArray = new ArrayList<Map<String,String>>();
+					
+					for (int i = 0; i < data.length(); i++) {
+						
+						
+						
+						JSONObject one = data.getJSONObject(i);
+						
+						map = new HashMap<String, String>();
+						
+						
+						//beer name
+						if (one.has("name")) {
+							 map.put("name", one.getString("name"));
+						}else{
+							map.put("name", "N/A");
+						}
+						//description
+						if (one.has("description")) {
+							map.put("description", one.getString("description"));
+						}else if (one.has("style")) {
+							
+						JSONObject style = one.getJSONObject("style");
+						
+						String styleDescription = style.getString("description");
+						
+						
+						Log.i("Style", styleDescription);
+						map.put("description", style.getString("description"));
+							
+						}else{
+						
+							map.put("description", "No Description Available");
+						
+					}
+						//label
+						if (one.has("labels")) {
+							JSONObject image = one.getJSONObject("labels");
+							
+							map.put("labels", image.getString("large"));
+							Log.i("map", map.toString());
+
+						}
+						
+						//abv 
+						if (one.has("abv")) {
+							 map.put("abv", one.getString("abv"));
+						}else {
+							map.put("abv", "N/A");
+						}
+						//id for brewery
+						if (one.has("id")) {
+							map.put("id", one.getString("id"));
+						}
+						//type
+						if (one.has("type")) {
+							map.put("type", one.getString("type"));
+						}else {
+							map.put("type", "N/A");
+						}
+						
+						//available
+						if (one.has("available")) {
+							JSONObject available = one.getJSONObject("available");
+							map.put("available", available.getString("name"));
+						}else {
+							map.put("available", "N/A");
+						}
+						
+						//style
+						if (one.has("style")) {
+							JSONObject style = one.getJSONObject("style");
+							JSONObject category = style.getJSONObject("category");
+							
+							map.put("style", category.getString("name"));
+						}else {
+							map.put("style", "N/A");
+						}
+						
+						//add map contents to array
+						dataArray.add(map);
+						 
+						
+							
+							
+						Log.i("array",String.valueOf(dataArray));
+						// TODO Auto-generated method stub
+						
+						
+					}
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					
+
+				}
+			}
+
+		public  void getApiResults(String beer){
+
+			String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"/?description/?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+			
+
+				
+				String queryString;
+				String queryString2;
+				try {
+					
+
+					queryString = URLEncoder.encode(beer,"UTF-8");
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.e("ERROR-URL", "ENCODING ISSUE");
+					queryString = "";
+				}
+				
+				 baseUrl = "http://api.brewerydb.com/v2/search/?q="+ queryString +"/?hasLabels=Y&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+				URL finalURL;
+						try {
+					
+					 finalURL = new URL(baseUrl);
+					 //finalURL2 = new URL(query);
+					 SearchAsyncTask queryRequest = new SearchAsyncTask();
+					
+					 	
+					 	Log.i("FinalURL", finalURL.toString());
+
+					
+						 queryRequest.execute(finalURL);
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.i("BAD URL", "URL MALFORMED");
+				}
+				
+		}
+			}
 
 	}
 

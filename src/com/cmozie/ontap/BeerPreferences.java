@@ -91,7 +91,7 @@ public class BeerPreferences extends Activity {
 				
 				//beerName.setText("");
 				
-				OnTapParseData.put("beerName", beerName.getText().toString());
+				OnTapParseData.put("beerID", beerName.getText().toString());
 				OnTapParseData.saveInBackground();
 				beerName.setText(beerName.getText().toString());
 			/*ParseUser user = ParseUser.getCurrentUser();
