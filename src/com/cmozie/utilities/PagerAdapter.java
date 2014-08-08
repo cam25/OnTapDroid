@@ -20,6 +20,7 @@ import com.cmozie.utilities.*;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,16 +29,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.cmozie.*;
@@ -220,6 +228,9 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
    		       {
 
    		           Intent n = new Intent(getActivity(), MoreDetails.class);
+   		        Object obj = arg0.getItemAtPosition(position);
+   		        String name = obj.toString();
+   		     n.putExtra("beerName", name);
    		           n.putExtra("position", position);
    		           startActivity(n);
    		       }
@@ -345,37 +356,126 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 public  HashMap<String, String> map;
 public  List<Map<String,String>> dataArray;
 		ListView searchedBrews;
-		
+		public EditText searchField; 
 		public Button searchButton;
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 	 
 	        View rootView = inflater.inflate(R.layout.beertionaryfragment, container, false);
-		      searchedBrews = (ListView) rootView.findViewById(R.id.searchedBrews);
-		      String [] allSearchedBrews = new String [] {"Boston Lager", "Rebel IPA", "Cream Stout", "Irish Red", "Summer Ale"};
-		      		      
-		      		      
-		      
-		      		      ArrayAdapter<String>searches = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allSearchedBrews);
-		      		      
-		      		      searchedBrews.setAdapter(searches);
-		      		      
-		      		      searchedBrews.setOnItemClickListener(new OnItemClickListener() {
-		      		    	  
-		      		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
-		      		       {
-
-		      		           Intent n = new Intent(getActivity(), MoreDetails.class);
-		      		           n.putExtra("position", position);
-		      		           startActivity(n);
-		      		       }
-						});
+	        
+	        
+	  
 		      		     
 	        return rootView;
 	    }
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			// TODO Auto-generated method stub
+			super.onActivityCreated(savedInstanceState);
+
+		      searchedBrews = (ListView) getActivity().findViewById(R.id.searchedBrews);
+		      
+		      searchField = (EditText)getActivity().findViewById(R.id.searchField);
+		      searchButton = (Button)getActivity().findViewById(R.id.searchButton);
+		      
+		      searchButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					String search = searchField.getText().toString();
+
+	    			 Log.i("search", search);
+	    			getApiResults(search);
+				}
+			});
+		      
+		      /*searchField.setOnEditorActionListener(new OnEditorActionListener() {
+					
+			    	
+			    	 @Override
+					public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+						// TODO Auto-generated method stub
+			    		 
+			    		 if (actionId == EditorInfo.IME_ACTION_GO) {
+							
+			    			 
+			    			 getActivity();
+			    			 
+			    			 //hide keyboard
+							InputMethodManager inputManager = (InputMethodManager)            
+			    					  getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+			    					    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),      
+			    					    InputMethodManager.HIDE_NOT_ALWAYS);
+						}
+			    		 
+						return false;
+					}
+
+				
+				});*/
+		      //String [] allSearchedBrews = new String [] {"Boston Lager", "Rebel IPA", "Cream Stout", "Irish Red", "Summer Ale"};
+		      		      
+		      		      
+		      
+		      		    //  ArrayAdapter<String>searches = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,allSearchedBrews);
+		      
+		}
 		
-		public class SearchAsyncTask extends AsyncTask<URL, Void, String>{
+	public void getApiResults(String beer){
+
+		String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"/?description/?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+		
+
+			
+			String queryString;
+			String queryString2;
+			try {
+				
+
+				queryString = URLEncoder.encode(beer,"UTF-8");
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				Log.e("ERROR-URL", "ENCODING ISSUE");
+				queryString = "";
+			}
+			
+			 baseUrl = "http://api.brewerydb.com/v2/search/?q="+queryString+"?hasLabels=Y&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+			URL finalURL;
+					try {
+				
+				 finalURL = new URL(baseUrl);
+				 //finalURL2 = new URL(query);
+				 SearchAsyncTask queryRequest = new SearchAsyncTask();
+				
+				 	
+				 	Log.i("FinalURL", finalURL.toString());
+
+				
+					 queryRequest.execute(finalURL);
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				Log.i("BAD URL", "URL MALFORMED");
+			}
+					
+					
+
+				}
+	public class SearchAsyncTask extends AsyncTask<URL, Void, String>{
+		TextView beerName;
+		 String beerNam;
+
+		 String description;
+		 Context context;
+
+		
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+
 			
 			ProgressDialog progressIndicator;
 			
@@ -436,8 +536,9 @@ public  List<Map<String,String>> dataArray;
 						}else{
 							map.put("name", "N/A");
 						}
+						
 						//description
-						if (one.has("description")) {
+						/*if (one.has("description")) {
 							map.put("description", one.getString("description"));
 						}else if (one.has("style")) {
 							
@@ -497,14 +598,30 @@ public  List<Map<String,String>> dataArray;
 						}else {
 							map.put("style", "N/A");
 						}
-						
+						*/
 						//add map contents to array
 						dataArray.add(map);
 						 
 						
+						ListAdapter adapter = new SimpleAdapter(getActivity(), dataArray, R.layout.listitems, new String[]{"name","company" },new int[]{R.id.listBeerType, R.id.listBeerCompany});
+		      		      searchedBrews.setAdapter(adapter);
+		      		      
+		      		      searchedBrews.setOnItemClickListener(new OnItemClickListener() {
+		      		    	  
+		      		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
+		      		       {
+
+		      		           Intent n = new Intent(getActivity(), MoreDetails.class);
+		      		           n.putExtra("position", position);
+		      		         Object obj = arg0.getItemAtPosition(position);
+		        		        String name = obj.toString();
+		        		     n.putExtra("beerName", name);
+		      		           
+		      		           startActivity(n);
+		      		       }
+						});
 							
-							
-						Log.i("array",String.valueOf(dataArray));
+						//Log.i("array",String.valueOf(dataArray));
 						// TODO Auto-generated method stub
 						
 						
@@ -516,49 +633,11 @@ public  List<Map<String,String>> dataArray;
 					
 
 				}
+				
 			}
 
-		public  void getApiResults(String beer){
-
-			String baseUrl = "http://api.brewerydb.com/v2/search/?q="+ beer +"/?description/?hasLabels=Y/&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
-			
-
-				
-				String queryString;
-				String queryString2;
-				try {
-					
-
-					queryString = URLEncoder.encode(beer,"UTF-8");
-
-				} catch (Exception e) {
-					// TODO: handle exception
-					Log.e("ERROR-URL", "ENCODING ISSUE");
-					queryString = "";
-				}
-				
-				 baseUrl = "http://api.brewerydb.com/v2/search/?q="+ queryString +"/?hasLabels=Y&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
-				URL finalURL;
-						try {
-					
-					 finalURL = new URL(baseUrl);
-					 //finalURL2 = new URL(query);
-					 SearchAsyncTask queryRequest = new SearchAsyncTask();
-					
-					 	
-					 	Log.i("FinalURL", finalURL.toString());
-
-					
-						 queryRequest.execute(finalURL);
-
-				} catch (Exception e) {
-					// TODO: handle exception
-					Log.i("BAD URL", "URL MALFORMED");
-				}
-				
 		}
-			}
-
+			
 	}
 
 }

@@ -13,34 +13,32 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/beertionary2" />
 
+    <ListView
+        android:id="@+id/searchedBrews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchField"
+        android:layout_centerHorizontal="true" >
+
+    </ListView>
+
     <Button
         android:id="@+id/searchButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText1"
-        android:layout_toRightOf="@+id/editText1"
+        android:layout_alignBottom="@+id/searchField"
+        android:layout_alignParentRight="true"
         android:text="Find The Brew" />
 
-    <ListView
-        android:id="@+id/searchedBrews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="84dp" >
-    </ListView>
-
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/searchField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/imageView1"
         android:layout_below="@+id/imageView1"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="Samuel Adams" >
+        android:layout_marginRight="12dp"
+        android:layout_toLeftOf="@+id/searchButton"
+        android:ems="10" >
 
         <requestFocus />
     </EditText>

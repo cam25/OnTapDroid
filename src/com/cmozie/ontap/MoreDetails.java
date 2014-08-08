@@ -1,5 +1,9 @@
 package com.cmozie.ontap;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -12,7 +16,11 @@ import com.cmozie.utilities.Network;
 import com.parse.ParseObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,8 +31,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MoreDetails extends Activity {
+	private static final int IO_BUFFER_SIZE = 0;
 	public TextView beerLabel;
 	public ImageButton tasteGood;
 	public String beerName;
@@ -36,7 +46,7 @@ public class MoreDetails extends Activity {
 	public static String abvText;
 	public static String breweryText;
 	public static String styleText;
-	
+	public static String imageURLS;
 	public static TextView abvTextView;
 	public static TextView breweryTextView;
 	public static TextView styleTextView;
@@ -66,10 +76,25 @@ public class MoreDetails extends Activity {
         Bundle extras = getIntent().getExtras();
         
     beerDescription.setMovementMethod(new ScrollingMovementMethod());
-    
+    try {
+		//setting shareprefrences equal to my static string filename	
+	
+			
+			if (url != null) {
+				url = new URL(imagURL);
+				
+			}
+
+			ImageRequest imageRecieve = new ImageRequest(); 
+			imageRecieve.execute(url);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
     
 			beerLabel.setText(extras.getString("beerName"));
-			
+			Log.i("beerName", extras.getString("beerName"));
 			 getApiResults(beerLabel.getText().toString());
 		
         //beerLabel.setText("Boston Lager");
@@ -78,6 +103,39 @@ public class MoreDetails extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
+				        MoreDetails.this);
+
+				// Setting Dialog Title
+				alertDialog2.setTitle("Taste Good!");
+
+				// Setting Dialog Message
+				alertDialog2.setMessage("Did you like this brew?");
+
+			
+				alertDialog2.setPositiveButton("Yes",
+				        new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int which) {
+				                // Write your code here to execute after dialog
+				                Toast.makeText(MoreDetails.this,
+				                        "This beer will be added to the taste good beer section in the database.", Toast.LENGTH_SHORT)
+				                        .show();
+				               
+				            }
+				        });
+				alertDialog2.setNegativeButton("NO",
+				        new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int which) {
+				                // Write your code here to execute after dialog
+				                Toast.makeText(MoreDetails.this,
+				                        "Please select the taste bad button to add to your beers that you didnt like..", Toast.LENGTH_SHORT)
+				                        .show();
+				                dialog.cancel();
+				            }
+				        });
+
+				// Showing Alert Dialog
+				alertDialog2.show();
 				ParseObject likedBeer = new ParseObject("TasteGood");
 				likedBeer.put("beerID", beerName);
 				
@@ -90,8 +148,41 @@ public class MoreDetails extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
+				        MoreDetails.this);
+
+				// Setting Dialog Title
+				alertDialog2.setTitle("Taste Bad!");
+
+				// Setting Dialog Message
+				alertDialog2.setMessage("Did This brew taste bad?");
+
+			
+				alertDialog2.setPositiveButton("YES",
+				        new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int which) {
+				                // Write your code here to execute after dialog
+				                Toast.makeText(MoreDetails.this,
+				                        "This beer will be added to the bad tasting beers section in the database", Toast.LENGTH_SHORT)
+				                        .show();
+				            }
+				        });
+				// Setting Negative "NO" Btn
+				alertDialog2.setNegativeButton("NO",
+				        new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int which) {
+				                // Write your code here to execute after dialog
+				                Toast.makeText(MoreDetails.this,
+				                        "Please select the taste good button to add to your beers that taste good.", Toast.LENGTH_SHORT)
+				                        .show();
+				                dialog.cancel();
+				            }
+				        });
+
+				// Showing Alert Dialog
+				alertDialog2.show();
 				ParseObject notLiked = new ParseObject("TasteBad");
-				notLiked.put("beerName", beerName);
+				notLiked.put("beerID", beerName);
 				
 				notLiked.saveInBackground();
 			}
@@ -121,7 +212,7 @@ Log.i("query", queryString);
 				queryString = "";
 			}
 
-			 baseUrl = "https://api.brewerydb.com/v2/search/?q="+queryString+"&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
+			 baseUrl = "https://api.brewerydb.com/v2/search/?q="+queryString+"?hasLabels=Y&type=beer&key=4b77a2665f85f929d4a87d30bbeae67b&format=json";
 			URL finalURL;
 					try {
 
@@ -198,6 +289,7 @@ Log.i("query", queryString);
 					if (firstDataset.has("name")) {
 						beerNam = firstDataset.getString("name");
 						beerLabel.setText(beerNam);
+						Log.i("beerName", beerNam);
 					}
 					if (firstDataset.has("abv")) {
 						abvText = firstDataset.getString("abv");
@@ -205,7 +297,16 @@ Log.i("query", queryString);
 					}
 					if (firstDataset.has("labels")) {
 						
-						
+						JSONObject labels = firstDataset.getJSONObject("labels");
+						 imageURLS = labels.getString("large");
+						url = new URL(imageURLS);
+						Log.i("URL", imageURLS);
+						ImageRequest imageRecieve = new ImageRequest(); 
+						//imageRecieve.execute(url);
+						//Bitmap bmp = BitmapFactory.decodeFile(new java.net.URL(url).openStream());  
+						//beerImg.setImageBitmap(bmp);
+						new GetImage((ImageView) findViewById(R.id.imageView1))
+			            .execute(imageURLS);
 					}
 					if (firstDataset.has("style")) {
 						JSONObject style = firstDataset.getJSONObject("style");
@@ -261,6 +362,31 @@ Log.i("query", queryString);
 		}
 		
 	}
+	
+	private class GetImage extends AsyncTask<String, Void, Bitmap> {
+	    ImageView bmImage;
+
+	    public GetImage(ImageView bmImage) {
+	        this.bmImage = bmImage;
+	    }
+
+	    protected Bitmap doInBackground(String... urls) {
+	        String urldisplay = urls[0];
+	        Bitmap mIcon11 = null;
+	        try {
+	            InputStream in = new java.net.URL(urldisplay).openStream();
+	            mIcon11 = BitmapFactory.decodeStream(in);
+	        } catch (Exception e) {
+	            Log.e("Error", e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return mIcon11;
+	    }
+
+	    protected void onPostExecute(Bitmap result) {
+	        bmImage.setImageBitmap(result);
+	    }
+	}
 	private class ImageRequest extends AsyncTask<URL, Void, Drawable>
     {
 
@@ -272,9 +398,9 @@ Log.i("query", queryString);
             {
                     
         Drawable draw = null;
-      
-                draw = Network.LoadImageFromWebOperations(imagURL);
-      
+      Log.i("test", "image");
+                draw = Network.LoadImageFromWebOperations(imageURLS);
+      //Log.i("draw", draw.toString());
         return draw;
             }
             
@@ -286,7 +412,9 @@ Log.i("query", queryString);
             {
             	loading.dismiss();
             	//set background
+            	
             	beerImg.setBackground(result);
+            	
                     
         }
     }
