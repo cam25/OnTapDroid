@@ -115,7 +115,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
 		              if (e == null) {
 		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
-		            		brews = tasteGoodBrews.get(i).getString("beerID");
+		            		brews = tasteGoodBrews.get(i).getString("beerName");
 		            		
 		            		//Log.i("tastegood ", tasteGoodBrews.toString());
 		            		  foos.add(brews);
@@ -149,6 +149,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
    		           Object obj = arg0.getItemAtPosition(position);
    		           String name = obj.toString();
    		           Log.i("obj", name);
+   		           
    		           n.putExtra("beerName", name);
    		           
    		           n.putExtra("position", position);
@@ -537,6 +538,9 @@ public  List<Map<String,String>> dataArray;
 							map.put("name", "N/A");
 						}
 						
+						if (one.has("id")) {
+							map.put("id", one.getString("id"));
+						}
 						//description
 						/*if (one.has("description")) {
 							map.put("description", one.getString("description"));
@@ -615,6 +619,10 @@ public  List<Map<String,String>> dataArray;
 		      		           n.putExtra("position", position);
 		      		         Object obj = arg0.getItemAtPosition(position);
 		        		        String name = obj.toString();
+		        		        String beerID = dataArray.get(position).get("id");
+		        		        
+		        		        Log.i("beerid", beerID);
+		        		        n.putExtra("id", beerID);
 		        		     n.putExtra("beerName", name);
 		      		           
 		      		           startActivity(n);

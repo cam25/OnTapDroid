@@ -49,10 +49,10 @@ public class MainActivity extends Activity {
          testObject = new ParseObject("OnTapData");
          
         ParseUser.enableAutomaticUser();
-        ParseACL defaultACL = new ParseACL();
-        defaultACL.setPublicReadAccess(true);
+        //ParseACL defaultACL = new ParseACL();
+        //defaultACL.setPublicReadAccess(true);
         
-        ParseACL.setDefaultACL(defaultACL, true);
+        //ParseACL.setDefaultACL(defaultACL, true);
         if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
             // if the user doesnt have an account display the main activity where they can sign up
            
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser != null) {
                 // Send logged in users to Welcome.class
-                Intent intent = new Intent(MainActivity.this, TasteGood.class);
+                Intent intent = new Intent(MainActivity.this, BeerPreferences.class);
                 startActivity(intent);
                 finish();
             } 

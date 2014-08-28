@@ -53,6 +53,7 @@ public class MoreDetails extends Activity {
 	public static ImageView beerImg;
 	public static URL url;
 	public static String imagURL;
+	public static String beersID;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,11 +93,14 @@ public class MoreDetails extends Activity {
 			
 			e.printStackTrace();
 		}
+    	//beersID = extras.getString("id");
+    	//Log.i("id", beersID);
     
+    //Log.i("extras", extras.getString("id"));
 			beerLabel.setText(extras.getString("beerName"));
 			Log.i("beerName", extras.getString("beerName"));
 			 getApiResults(beerLabel.getText().toString());
-		
+			 getBreweryDetails(beersID);
         //beerLabel.setText("Boston Lager");
         tasteGood.setOnClickListener(new View.OnClickListener() {
 			
@@ -295,6 +299,14 @@ Log.i("query", queryString);
 						abvText = firstDataset.getString("abv");
 						abvTextView.setText(abvText);
 					}
+					if (firstDataset.has("id")) {
+						
+						beersID = firstDataset.getString("id");
+						Log.i("id", beersID);
+						
+						//looping too much!!
+						// getBreweryDetails(beersID);
+					}
 					if (firstDataset.has("labels")) {
 						
 						JSONObject labels = firstDataset.getJSONObject("labels");
@@ -338,8 +350,8 @@ Log.i("query", queryString);
 					
 					
 				}
-				
 			
+				
 
 			loading.dismiss();
 			} catch (JSONException e) {
@@ -362,7 +374,45 @@ Log.i("query", queryString);
 		}
 		
 	}
-	
+public  void getBreweryDetails(String beerId){
+
+		
+		String query = "http://api.brewerydb.com/v2/beer/"+beerId+"/?withBreweries=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
+
+			String queryString;
+			String queryString2;
+			try {
+				
+
+				queryString2 = URLEncoder.encode(query,"UTF-8");
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				Log.e("ERROR-URL", "ENCODING ISSUE");
+				queryString = "";
+			}
+			
+			 query = "http://api.brewerydb.com/v2/beer/"+beerId+"/?withBreweries=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
+			URL finalURL2;
+			try {
+				
+				 finalURL2 = new URL(query);
+				 Log.i("finalurl", finalURL2.toString());
+				 brewDetails breweryDetailRequest = new brewDetails();
+				
+				 breweryDetailRequest.execute(finalURL2);
+				
+				
+					
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				Log.i("BAD URL", "URL MALFORMED");
+			}
+			
+			
+		}
+
 	private class GetImage extends AsyncTask<String, Void, Bitmap> {
 	    ImageView bmImage;
 
@@ -418,5 +468,81 @@ Log.i("query", queryString);
                     
         }
     }
+	private class brewDetails extends AsyncTask<URL, Void, String>{
+		
+		
+
+		
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected String doInBackground(URL... urls) {
+			// TODO Auto-generated method stub
+			String reply = "";
+			for (URL url : urls) {
+			reply = Network.URLStringResponse(url);	
+			}
+			return reply;
+		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			
+			try {
+				JSONObject json = new JSONObject(result);
+				JSONObject data = json.getJSONObject("data");
+				
+				JSONArray breweryDetails = data.getJSONArray("breweries");
+				JSONObject locationDetails = breweryDetails.getJSONObject(0);
+				
+				
+			
+				for (int i = 0; i < breweryDetails.length(); i++) {
+					JSONObject one = breweryDetails.getJSONObject(i);
+					JSONArray locations = locationDetails.getJSONArray("locations");
+					
+					
+					//Log.i("two", locations.toString());
+				
+
+					if (one.has("name")) {
+						String name = one.getString("name");
+						Log.i("breweryName", name);
+						breweryTextView.setText(name);
+						
+					}
+					
+					
+				
+				
+					
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				AlertDialog.Builder alert = new AlertDialog.Builder(MoreDetails.this);
+				alert.setTitle("Not Available");
+				alert.setMessage("Brewery details not available for this beer.");
+				alert.setCancelable(false);
+				alert.setPositiveButton("Alright", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						dialog.cancel();
+					}
+				});
+				alert.show();
+				e.printStackTrace();
+				
+				
+			}
+		}
+	}
     
 }
