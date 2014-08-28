@@ -18,7 +18,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="orientation|keyboardHidden|screenSize"  >
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,10 +28,14 @@
             </intent-filter>
         </activity>
       
-        <activity android:name="TasteGood"></activity>
-        <activity android:name="BeerPreferences"></activity>
-        <activity android:name="Register"></activity>
-        <activity android:name="MoreDetails"></activity>
+        <activity android:name="TasteGood"
+            android:configChanges="orientation|keyboardHidden|screenSize" ></activity>
+        <activity android:name="BeerPreferences"
+            android:configChanges="orientation|keyboardHidden|screenSize" ></activity>
+        <activity android:name="Register"
+            android:configChanges="orientation|keyboardHidden|screenSize" ></activity>
+        <activity android:name="MoreDetails"
+            android:configChanges="orientation|keyboardHidden|screenSize" ></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
+import com.cmozie.ontap.BeerObject;
 import com.cmozie.ontap.MoreDetails;
 
 import com.cmozie.ontap.R;
@@ -51,6 +53,7 @@ import android.widget.Toast;
 import com.cmozie.*;
 import com.cmozie.fragmentclasses.*;
 import com.parse.FindCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -90,11 +93,27 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		ListView goodBrews;
 		public String brews;
 		public ArrayList<String> foos;
+		public  Map<String, String> map;
+		public  List<Map<String,String>> dataArray;
+		
+		public ArrayList<BeerObject> beer_Array;
 		public ArrayAdapter<String>beers;
+		public String beerids;
+		
+		public ArrayList<String> beerDataArray; 
 		@Override
 	    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	            Bundle savedInstanceState) {
 			foos = new ArrayList<String>();
+			beer_Array = new ArrayList<BeerObject>();
+			Context context = getActivity();
+			
+			
+			
+			
+			   setRetainInstance(true);
+		
+			
 	        View rootView = inflater.inflate(R.layout.tastegoodfragment, container, false);
 	        //View theList = rootView.findViewById(R.id.favoriteBrews);
 		      goodBrews = (ListView) rootView.findViewById(R.id.favoriteBrews);
@@ -103,6 +122,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		      //if (currentUser != null) {
 		        // do stuff with the user
 		      
+		      beerDataArray = new ArrayList<String>();
+		      
+		    
+		      
+		      ArrayList beerList = new ArrayList();
+					
+					
 		    //else if the user already has registered send them to the preference class
 	            ParseUser currentUser = ParseUser.getCurrentUser();
 	            if (currentUser != null) { 
@@ -114,48 +140,95 @@ public class PagerAdapter extends FragmentPagerAdapter {
 		      query.findInBackground(new FindCallback<ParseObject>() {
 		          public void done(List<ParseObject> tasteGoodBrews, ParseException e) {
 		              if (e == null) {
+		            	  
+		            	  dataArray = new ArrayList<Map<String,String>>();
+		            	  
 		            	  for (int i=0; i< tasteGoodBrews.size(); i++){
-		            		brews = tasteGoodBrews.get(i).getString("beerName");
+		            		 
+		            		  BeerObject beer_object = new BeerObject();
+		            		  
+		            		  map = new HashMap<String, String>();
+		            		  
+		            		//brews = tasteGoodBrews.get(0).getString("beerName");
+		            		//beerids = tasteGoodBrews.get(0).getString("beerID");
 		            		
-		            		//Log.i("tastegood ", tasteGoodBrews.toString());
-		            		  foos.add(brews);
-		            		  
-		            		  
-		            		  
-
+		            		
+		            		
+		            		//Log.i("tastegood ", beerids);
+		            		  //foos.add(brews);
+		            		
+		            		map.put("name", tasteGoodBrews.get(i).getString("beerName"));
+		            		map.put("id", tasteGoodBrews.get(i).getString("beerID"));
+		            		
+		            		dataArray.add(map);
+		            		Log.i("MAP", map.toString());
+		            		//map.put("name", brews);
+		            		//map.put("id", beerids);
+		            	
+		            		  //foos.add(brews);
+		            		
+		            		/*for (Object object : dataArray) {
+								String test = dataArray.get;
+							}*/
+		            	
+		            	//map.put("name",brews);
+		            	 // map.put("id",beerids);
+		            	  
+		            	
+		            	  
+			            	  //Log.i("brews", map.toString());
+		            		 Log.i("DATA ARRAY", dataArray.toString());
+		            		
+			            	
+		            	  //dataArray.add(map);
 		            	  }
+		            	//ListAdapter adapter = ListAdapter(this, R.layout.listitems, beer_Array));
+							
+		            	 
+		            	  ListAdapter adapter = new SimpleAdapter(getActivity(), dataArray, R.layout.listitems, new String[]{"name","company" },new int[]{R.id.listBeerType, R.id.listBeerCompany});
+
+		     		      goodBrews.setAdapter(adapter);
+			            	   
+		            	  
+		            	 
 		            	  //Log.i("brews", brews);
 		                  Log.i("score", "Retrieved " + tasteGoodBrews.size() + " scores");
-		                  beers = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,foos);
+		                  //beers = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,foos);
 		    		      
-		    		      goodBrews.setAdapter(beers);
+		               
+		                
 		              } else {
 		                  Log.d("score", "Error: " + e.getMessage());
 		              }
+
+		             
+	 		       //Log.i("foos size ", foos.size() + " items in array");
+	 		    
+	 		      goodBrews.setOnItemClickListener(new OnItemClickListener() {
+	   		    	  
+	    		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
+	    		       {
+	    		    		
+	    		    		 
+	    		           Intent n = new Intent(getActivity(), MoreDetails.class);
+	    		           
+	    		           Object obj = arg0.getItemAtPosition(position);
+	    		           String name = obj.toString();
+	    		        String brewID = dataArray.get(position).get("id");
+	    		           Log.i("obj", name);
+	    		           
+	    		           n.putExtra("beerName", name);
+	    		           n.putExtra("id", brewID);
+	    		           n.putExtra("position", position);
+	    		           startActivity(n);
+	    		       }
+	 				});
+		             
 		          }
 		      });
-		      
-		      
-		       Log.i("foos size ", foos.size() + " items in array");
-		    
-		      goodBrews.setOnItemClickListener(new OnItemClickListener() {
-  		    	  
-   		    	 public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) 
-   		       {
-   		    		
-   		    		 
-   		           Intent n = new Intent(getActivity(), MoreDetails.class);
-   		           
-   		           Object obj = arg0.getItemAtPosition(position);
-   		           String name = obj.toString();
-   		           Log.i("obj", name);
-   		           
-   		           n.putExtra("beerName", name);
-   		           
-   		           n.putExtra("position", position);
-   		           startActivity(n);
-   		       }
-				});
+		     
+				
+				
 		      }
 		    
 	        return rootView;
@@ -194,7 +267,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 			          public void done(List<ParseObject> tasteBadBrews, ParseException e) {
 			              if (e == null) {
 			            	  for (int i=0; i< tasteBadBrews.size(); i++){
-			            		brews2 = tasteBadBrews.get(i).getString("beerID");
+			            		brews2 = tasteBadBrews.get(i).getString("beerName");
 			            		
 			            		
 			            		  foos2.add(brews2);
@@ -236,6 +309,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
    		           startActivity(n);
    		       }
 				});
+		      
 	        return rootView;
 	    }
 	}
@@ -268,7 +342,7 @@ String [] allBadBeers = new String [] {"Third Shift", "90 Minute IPA", "Samuel A
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					
-					  
+					
 					  
 					AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
 					        getActivity());

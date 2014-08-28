@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.cmozie.utilities.PagerAdapter.TasteGoodFragment;
+
 import com.cmozie.utilities.UserData;
 import com.parse.LogInCallback;
 import com.parse.Parse;

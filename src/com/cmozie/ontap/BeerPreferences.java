@@ -388,6 +388,7 @@ public class BeerPreferences extends Activity {
                                     	  
                                     	  beerObject.setUserName(userNameString);
                                     	  beerObject.setBeerId(beerIDString);
+                                    	 
                                     	  
                                     	  Log.i("TESTARRAY", beerObject.getUserName() + " " + beerObject.getBeerId());
                                     	  
@@ -515,7 +516,7 @@ public class BeerPreferences extends Activity {
                       
                       });
 		        	         }
-                   // startActivity(n);
+                    startActivity(n);
                 }
                          });
 							
