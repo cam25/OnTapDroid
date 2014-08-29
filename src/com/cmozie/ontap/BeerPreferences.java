@@ -17,7 +17,6 @@ import org.json.JSONObject;
 
 import com.cmozie.utilities.Network;
 import com.cmozie.utilities.UserData;
-import com.cmozie.utilities.PagerAdapter.BeertionaryFragment.SearchAsyncTask;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -37,6 +36,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,7 +81,19 @@ public class BeerPreferences extends Activity {
         
         beerNameString = beerName.getText().toString();
         
+        InputMethodManager imm2 = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+if(imm2 != null){
+imm2.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+}
         
+        if (beerName.isSelected()) {
+        	InputMethodManager imm = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+if(imm != null){
+imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
+}
+		}
         
         //Parse.initialize(this, "V9YIObiclS0AxwKGsekYLirCE7YezkJaKgx1va31", "K3fVvZf6gIQnDbjjHWoiCb2IuRMDe1QTyKRDyHkq");
         OnTapParseData = new ParseObject("OnTapData");
@@ -106,7 +118,11 @@ public class BeerPreferences extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
-				
+				 InputMethodManager imm2 = (InputMethodManager)
+			                getSystemService(Context.INPUT_METHOD_SERVICE);
+			if(imm2 != null){
+			imm2.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+			}
 				
 				String search = beerName.getText().toString();
 

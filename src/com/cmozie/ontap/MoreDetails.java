@@ -82,10 +82,10 @@ public class MoreDetails extends Activity {
          abvTextView = (TextView)findViewById(R.id.abvText);
          breweryTextView = (TextView)findViewById(R.id.breweryText);
          styleTextView = (TextView)findViewById(R.id.styleText);
-         beerImg = (ImageView)findViewById(R.id.imageView1);
+         beerImg = (ImageView)findViewById(R.id.moreDetailsImage);
          
          
-        tasteGood = (ImageButton)findViewById(R.id.tasteGoodButn);
+        tasteGood = (ImageButton)findViewById(R.id.tasteGood);
         tasteBad = (ImageButton)findViewById(R.id.tasteBad);
         beerDescription = (TextView)findViewById(R.id.beerDescription);
        extras = getIntent().getExtras();
@@ -129,11 +129,7 @@ public class MoreDetails extends Activity {
 				   user = ParseUser.getCurrentUser();
 				 query = ParseQuery.getQuery("BeerClass");
 				 query.whereEqualTo("beerID",beersID );
-                 //query.whereMatchesKeyInQuery("userName", "userName", innerQuery);
-               //query.include("userLikes");
-               //query.selectKeys(Arrays.asList("userLikes"));;
-    	         //ParseQuery<ParseObject> query = ParseQuery.getQuery("BeerClass");
-                 //query.whereEqualTo("Name", beersName);
+                
           query.findInBackground(new FindCallback<ParseObject>() {
         
         	  BeerObject beerObject = new BeerObject();
@@ -210,11 +206,18 @@ public class MoreDetails extends Activity {
                                     	 if(name.compareTo(beersID)==0){
                       	                    Log.i("TAG", "Match");
                       	                    
+                      	                    tasteGood.setVisibility(View.GONE);
+                      	                    
+                      	                    
                       	                    hasLiked = true;
+                      	            }else{
+                      	            	tasteGood.setVisibility(View.VISIBLE);
+                      	            	setHateButtonListener();
+                      	            	
                       	            }
 								
                                               
-                                    	 String[] adduserTest;
+                                    
                                     	 
                                  	}
                                     
@@ -367,11 +370,224 @@ public class MoreDetails extends Activity {
 			}
 		});
         
+       
         tasteBad.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
+				
+				beersID = extras.getString("id");
+				   user = ParseUser.getCurrentUser();
+				 query = ParseQuery.getQuery("TasteBad");
+				 query.whereEqualTo("beerID",beersID );
+             
+       query.findInBackground(new FindCallback<ParseObject>() {
+     
+     	  BeerObject beerObject = new BeerObject();
+     	  
+           public void done(List<ParseObject> objects, ParseException e) {
+               if (e == null) {
+                 
+             	  //aa = new ArrayList <String>();
+             	 udislike = new ArrayList<String>();
+             	 
+                   //test = new ArrayList<BeerObject>();
+                   dtest2 = new ArrayList<BeerObject>();
+                   
+                   if (objects.size() > 0) {
+                 	  
+                 	  ParseObject beerParseObject = null;
+                 	  
+                       for (int k = 0; k < objects.size(); k++) {
+                     	  Object beer_object = objects.get(k);
+                     	  
+                     	   beerParseObject = (ParseObject)beer_object;
+                     	 // ParseObject testObject = (ParseObject)objects.get(0);
+                     	  
+                     	  String userDislikes = ((ParseObject) beer_object).get("userDislikes").toString();
+                     	  String userNameString = ((ParseObject) beer_object).get("userLikes").toString();
+                     	  String beerIDString = ((ParseObject) beer_object).getString("beerID").toString();
+                     	  
+                     	  
+                     	  beerObject.setUserName(userNameString);
+                     	  beerObject.setBeerId(beerIDString);
+                     	  beerObject.setDislikes(userDislikes);
+                     	  
+                     	  
+                     	  
+                     	  Log.i("TESTARRAY", beerObject.getUserName() + " " + beerObject.getBeerId() + " " + beerObject.getDislikes());
+                     	  
+                     	  test.add(beerObject);
+                     	 
+                     	  dtest2.add(beerObject);
+                     	  
+							 //userLikes = (ParseObject) test.get(0);
+							 
+                          //aa.add(userLikes.get("beerID").toString());
+                         
+               
+                                 //ArrayList currentBeers = (ArrayList) Arrays.asList(objects);
+                                
+						}
+                        
+
+                                  // Log.i("parse", userLikes.get(user.getUsername()).toString());
+                                   
+
+                                 
+                                   boolean hasLiked = false;
+                                   boolean hasDisliked = false;
+                                  
+                                  for (int i = 0; i < test.size(); i++) {
+                                 	 Log.i("Array Count ",String.valueOf(test.size()));
+                                 	 //Log.i("userTESTING",test.get(i).getUserName().toString());
+                                 	 
+                                 	 Log.i("NullCheck", beerObject == null ? "Is Null" : "Is not Null");
+                                 	 Log.i("NullCheck", beersID == null ? "Is Null" : "Is not Null");
+                                 	 
+                                 	 aa.add(test.get(i).getBeerId());
+                                 	 Log.i("aa", aa.toString());
+                                     
+                                 		 
+										}
+                                  for (int j = 0; j < aa.size(); j++) {
+											
+                                 	 String name = aa.get(j).toString();
+                                 	 Log.i("index of", name);
+                                 	 if(name.compareTo(beersID)==0){
+                   	                    Log.i("TAG", "Match");
+                   	                    
+                   	                    
+                   	                    tasteBad.setVisibility(View.GONE);
+                   	                    
+                   	                    hasLiked = true;
+                   	            }else
+                   	            {
+                   	            	
+                   	            }
+								
+                                           
+                                 	 String[] adduserTest;
+                                 	 
+                              	}
+                                 
+                                  for (int i = 0; i < dtest2.size(); i++) {
+                                 	 Log.i("Array Count ",String.valueOf(dtest2.size()));
+                                 	 //Log.i("userTESTING",test.get(i).getUserName().toString());
+                                 	 
+                                 	 Log.i("NullCheck", beerObject == null ? "Is Null" : "Is not Null");
+                                 	 Log.i("NullCheck", beersID == null ? "Is Null" : "Is not Null");
+                                 	 
+                                 	 udislike.add(dtest2.get(i).getDislikes());
+                                 	 Log.i("udislike", udislike.toString());
+                                     
+                                 		 
+										}
+                                  for (int j = 0; j < udislike.size(); j++) {
+											
+                                 	 String name = udislike.get(j).toString();
+                                 	 Log.i("index of", name);
+                                 	 if(name.compareTo(beersID)==0){
+                   	                    Log.i("TAG", "Disliked");
+                   	                    
+                   	                    hasDisliked = true;
+                   	                    
+                   	                    
+                   	                
+                   	            }
+                                 	
+								
+                                           
+                                 
+                                 	 
+                              
+                                  if (hasDisliked) {
+											udislike.remove(user.getUsername());
+											beerParseObject.put("userDislikes", user.getUsername());
+											
+											 Log.i("removed", "Disliked");
+										}
+                                  
+                              	}
+                             	 /*
+                             	  * 
+                             		 for(String test : aa ){
+                             	            if(test.contentEquals(user.getUsername())){
+                             	                    Log.i("TAG", "Match");
+                             	            }else{
+                             	                Log.i("TAG", "Not a match");
+                             	                Log.i("TAG", test);
+                             	            }
+                             	        }*/                 
+                                   
+                                  
+                                  
+                                         if (!hasLiked) {
+                                           
+                                           //aa.add(usersName.getUsername());
+                                           Log.i("has Not ", "liked");
+                                          
+                                           aa.add(user.getUsername());
+                                           udislike.remove(user.getUsername());
+                                           ParseObject favoriteBrew = new ParseObject("TasteBad");
+                                           
+                                           favoriteBrew.put("userName", user.getUsername());
+                                           favoriteBrew.put("beerName", beerLabel.getText().toString());
+                                           favoriteBrew.put("beerID", beersID);
+                                           favoriteBrew.saveInBackground();
+                                           
+                                           beerParseObject.put("userDislikes", user.getUsername());
+                                           
+                                         
+                                                  }
+                              	
+                                           //beerParseObject.saveInBackground();    
+                                          //beerObject.saveInBackground();
+                           //ParseObject *currentBeer =
+
+            
+                                        
+                                  }else{
+                                 	 Log.i("else", "else");
+                                 	 
+                                           List <String> aa = new ArrayList <String>();
+                                           aa.add(user.getUsername());
+                                          
+                                          
+                                 ParseObject favoriteBrew = new ParseObject("TasteBad");
+                             favoriteBrew.put("userName", user.getUsername());
+                           favoriteBrew.put("beerName", beerLabel.getText().toString());
+                           favoriteBrew.put("beerID", beersID);
+                          
+                           List <String> aa2 = new ArrayList <String>();
+                          
+                          
+                           aa2.add(user.getUsername());
+                           favoriteBrew.saveInBackground();
+                          
+                          
+                           //userName2.add("userName", aa.toString());
+                           ParseObject beerClass = new ParseObject("BeerClass");
+                           beerClass.put("userName", user.getUsername());
+                           beerClass.put("Name", beerLabel.getText().toString());
+                           beerClass.put("beerID", beersID);
+                          
+                          
+                           beerClass.put("userDislikes", user.getUsername());
+                          
+                           beerClass.saveInBackground();
+                           
+                                         
+                   }
+                   
+               } else {
+                   Log.d("score", "Error: " + e.getMessage());
+               }
+           }
+       
+       });
 				AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
 				        MoreDetails.this);
 
@@ -415,11 +631,39 @@ public class MoreDetails extends Activity {
        
         
     }
-	
-	
+	//TODO
+	 public void setHateButtonListener () {
+     	
+     	tasteBad.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+		});
+     	
+     }
+     
+	 public void setLikeButtonListener () {
+	     	
+	     	tasteGood.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					
+					
+				}
+			});
+	     	
+	     }
 	public  void getApiResults(String beer){
 
-		String baseUrl = "http://api.brewerydb.com/v2/beer/"+beer+"/?withBreweries=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
+		String baseUrl = "http://api.brewerydb.com/v2/beer/"+beer+"/?withLabels=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
 
 
 
@@ -436,7 +680,7 @@ Log.i("query", queryString);
 				queryString = "";
 			}
 
-			 baseUrl = "http://api.brewerydb.com/v2/beer/"+beer+"?withLabels=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
+			 baseUrl = "http://api.brewerydb.com/v2/beer/"+beer+"/?withLabels=Y&key=4b77a2665f85f929d4a87d30bbeae67b";
 			URL finalURL;
 					try {
 
@@ -516,7 +760,7 @@ Log.i("query", queryString);
 					}
 					if (data.has("abv")) {
 						abvText = data.getString("abv");
-						abvTextView.setText(abvText);
+						abvTextView.setText("(ABV)"+abvText + "%");
 					}
 					if (data.has("id")) {
 						
@@ -536,7 +780,7 @@ Log.i("query", queryString);
 						//imageRecieve.execute(url);
 						//Bitmap bmp = BitmapFactory.decodeFile(new java.net.URL(url).openStream());  
 						//beerImg.setImageBitmap(bmp);
-						new GetImage((ImageView) findViewById(R.id.imageView1))
+						new GetImage((ImageView) findViewById(R.id.moreDetailsImage))
 			            .execute(imageURLS);
 					}
 					if (data.has("style")) {

@@ -1,8 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="#b7b7b7">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#b7b7b7" >
+
+     <RelativeLayout
+            android:id="@+id/outer_ll"
+            android:layout_width="match_parent"
+            android:layout_height="900dp"
+            android:orientation="vertical"
+    		android:background="#b7b7b7">
+    
  <TextView
         android:id="@+id/beerNameMore"
         android:layout_width="wrap_content"
@@ -11,18 +19,41 @@
         android:layout_centerHorizontal="true"
         
         android:textAppearance="?android:attr/textAppearanceLarge" />
+<ImageButton
+        android:id="@+id/tasteBad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/breweryText"
+        android:src="@drawable/tastesbad" />
+
+   
+    <ImageView
+        android:id="@+id/moreDetailsImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beerNameMore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="19dp"
+         />
+
+    <ImageButton
+        android:id="@+id/tasteGood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/breweryText"
+        android:src="@drawable/beer" />
     <TextView
         android:id="@+id/beerDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tasteBad"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/abvText"
         android:layout_marginTop="20dp"
         android:maxLines="20"
         android:scrollbars="vertical"
-       
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -31,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/moreDetailsImage"
         android:textSize="15sp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
@@ -40,7 +71,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_above="@+id/beerDescription"
-          android:layout_below="@+id/imageView1"
+          android:layout_below="@+id/moreDetailsImage"
           android:layout_centerHorizontal="true"
           android:layout_marginRight="10dp"
          android:textSize="15sp"
@@ -53,36 +84,12 @@
            android:layout_alignBottom="@+id/breweryText"
            android:layout_alignLeft="@+id/tasteBad"
            android:layout_alignParentRight="true"
-           android:layout_below="@+id/imageView1"
+           android:layout_below="@+id/moreDetailsImage"
            android:textSize="15sp"
            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageButton
-        android:id="@+id/tasteGoodButn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tasteBad"
-        android:layout_toLeftOf="@+id/breweryText"
-        android:src="@drawable/beer" />
+    
 
-    <ImageButton
-        android:id="@+id/tasteBad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/breweryText"
-        android:src="@drawable/tastesbad" />
+   </RelativeLayout>
 
-   
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/beerNameMore"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
-        android:src="@drawable/boston" />
-
-   
-
-</RelativeLayout>
+</ScrollView>

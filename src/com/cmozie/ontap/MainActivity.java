@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         Parse.initialize(this, "V9YIObiclS0AxwKGsekYLirCE7YezkJaKgx1va31", "K3fVvZf6gIQnDbjjHWoiCb2IuRMDe1QTyKRDyHkq");
         
          testObject = new ParseObject("OnTapData");
-         
+       
         ParseUser.enableAutomaticUser();
         //ParseACL defaultACL = new ParseACL();
         //defaultACL.setPublicReadAccess(true);
