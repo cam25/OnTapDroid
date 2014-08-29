@@ -403,9 +403,40 @@ public class PagerAdapter extends FragmentPagerAdapter {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					ParseUser currentUser = ParseUser.getCurrentUser();
+					
+					if (currentUser != null) {
+						Log.i("current", currentUser.getUsername());
+						
+					
+					ParseQuery<ParseObject> query = ParseQuery.getQuery("TasteGood");
+					query.whereEqualTo("userName", currentUser.getUsername());
+					query.findInBackground(new FindCallback<ParseObject>() {
+					    public void done(List<ParseObject> scoreList, ParseException e) {
+					        if (e == null) {
+					            Log.d("score", "Retrieved " + scoreList.size() + " scores");
+					        } else {
+					            Log.d("score", "Error: " + e.getMessage());
+					        }
+					    }
+					});
+					
+					ParseQuery<ParseObject> query2 = ParseQuery.getQuery("BeerClass");
+					query2.whereEqualTo("userLikes", currentUser.getUsername());
+					query2.findInBackground(new FindCallback<ParseObject>() {
+					    public void done(List<ParseObject> scoreList, ParseException e) {
+					        if (e == null) {
+					            Log.d("score", "Retrieved " + scoreList.size() + " scores");
+					        } else {
+					            Log.d("score", "Error: " + e.getMessage());
+					        }
+					    }
+					});
+					
 					
 					  ParseObject favoriteBrew = new ParseObject("TasteGood");
-                     
+                     favoriteBrew.put("userName", currentUser.getUsername());
+                     favoriteBrew.put("beerName", beerLabel.getText().toString());
                     favoriteBrew.put("beerID", string);
                     
                    
@@ -414,6 +445,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                    
                     //userName2.add("userName", aa.toString());
                     ParseObject beerClass = new ParseObject("BeerClass");
+                   beerClass.put("userLikes", currentUser.getUsername());
                    
                     beerClass.put("beerID", string);
                    
@@ -421,6 +453,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                   
                    
                     beerClass.saveInBackground();
+				}
 				}
 		});
 
