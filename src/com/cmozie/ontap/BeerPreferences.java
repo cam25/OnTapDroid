@@ -62,7 +62,7 @@ public class BeerPreferences extends Activity {
 	public static ParseUser usersName;
 	public static String beersName;
 	public static String beerID;
-	public static ParseUser userName2;
+	public static ParseUser user;
 	public static ParseObject userLikes;
 	public static List <String> aa;
 	public static ArrayList<BeerObject> test;
@@ -101,12 +101,11 @@ imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
 		//testObject.put("password", passwordString);
 		//testObject.saveInBackground();
         
-      usersName = ParseUser.getCurrentUser();
+    
         //ParseUser usersPassword = ParseUser.g
-        userString = usersName.getUsername().toString();
-        Log.i("Logged in as  - ", userString);
+        //Log.i("Logged in as  - ", userString);
         
-        OnTapParseData.put("userName", userString);
+        //OnTapParseData.put("userName", userString);
         //OnTapParseData.saveInBackground();
          userData = new UserData();
          foos2 = new ArrayList<String>();
@@ -495,25 +494,25 @@ imm.toggleSoftInput(0, InputMethodManager.SHOW_IMPLICIT);
                                                  }else{
                                                 	 Log.i("else", "else");
                                                 	 
-                                                          List <String> aa = new ArrayList <String>();
-                                                          aa.add(usersName.getUsername());
+                                                          //List <String> aa = new ArrayList <String>();
+                                                          //aa.add(usersName.getUsername());
                                                          
                                                          
                                                          ParseObject favoriteBrew = new ParseObject("TasteGood");
-                                                          favoriteBrew.put("userName", usersName.getUsername());
+                                                          favoriteBrew.put("userName", user.getUsername());
                                           favoriteBrew.put("beerName", beersName);
                                           favoriteBrew.put("beerID", beerID);
                                          
                                           List <String> aa2 = new ArrayList <String>();
                                          
                                          
-                                          aa2.add(usersName.getUsername());
+                                          aa2.add(user.getUsername());
                                           favoriteBrew.saveInBackground();
                                          
                                          
                                           //userName2.add("userName", aa.toString());
                                           ParseObject beerClass = new ParseObject("BeerClass");
-                                          beerClass.put("userName", usersName.getUsername());
+                                          beerClass.put("userName", user.getUsername());
                                           beerClass.put("Name", beersName);
                                           beerClass.put("beerID", beerID);
                                          

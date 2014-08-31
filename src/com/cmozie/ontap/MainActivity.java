@@ -58,13 +58,11 @@ public class MainActivity extends Activity {
            
         } else {
         	//else if the user already has registered send them to the preference class
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            if (currentUser != null) {
-                // Send logged in users to Welcome.class
-                Intent intent = new Intent(MainActivity.this, BeerPreferences.class);
-                startActivity(intent);
-                finish();
-            } 
+        	Intent intent = new Intent(MainActivity.this, BeerPreferences.class);
+			startActivity(intent);
+			Toast.makeText(getApplicationContext(), "Logged In", Toast.LENGTH_LONG).show();
+			finish();
+            
         }
         //testObject.put("foo", "bar");
         //testObject.saveInBackground();

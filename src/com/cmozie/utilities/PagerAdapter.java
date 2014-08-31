@@ -2,7 +2,6 @@ package com.cmozie.utilities;
 
 
 
-
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -422,7 +421,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 					});
 					
 					ParseQuery<ParseObject> query2 = ParseQuery.getQuery("BeerClass");
-					query2.whereEqualTo("userLikes", currentUser.getUsername());
+					query2.whereEqualTo("userName", currentUser.getUsername());
 					query2.findInBackground(new FindCallback<ParseObject>() {
 					    public void done(List<ParseObject> scoreList, ParseException e) {
 					        if (e == null) {
@@ -446,7 +445,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                     //userName2.add("userName", aa.toString());
                     ParseObject beerClass = new ParseObject("BeerClass");
                    beerClass.put("userLikes", currentUser.getUsername());
-                   
+                   beerClass.put("beerName", beerLabel.getText().toString());
                     beerClass.put("beerID", string);
                    
                    
@@ -456,35 +455,57 @@ public class PagerAdapter extends FragmentPagerAdapter {
 				}
 				}
 		});
-
+			
 
 			tasteBadButn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					ParseUser currentUser = ParseUser.getCurrentUser();
 					
+					if (currentUser != null) {
+						Log.i("current", currentUser.getUsername());
+						
+					
+					ParseQuery<ParseObject> query = ParseQuery.getQuery("TasteBad");
+					query.whereEqualTo("userName", currentUser.getUsername());
+					query.findInBackground(new FindCallback<ParseObject>() {
+					    public void done(List<ParseObject> scoreList, ParseException e) {
+					        if (e == null) {
+					            Log.d("score", "Retrieved " + scoreList.size() + " scores");
+					        } else {
+					            Log.d("score", "Error: " + e.getMessage());
+					        }
+					    }
+					});
+					
+					ParseQuery<ParseObject> query2 = ParseQuery.getQuery("BeerClass");
+					query2.whereEqualTo("userName", currentUser.getUsername());
+					query2.findInBackground(new FindCallback<ParseObject>() {
+					    public void done(List<ParseObject> scoreList, ParseException e) {
+					        if (e == null) {
+					            Log.d("score", "Retrieved " + scoreList.size() + " scores");
+					        } else {
+					            Log.d("score", "Error: " + e.getMessage());
+					        }
+					    }
+					});
 					  ParseObject favoriteBrew = new ParseObject("TasteBad");
-                      
-                    favoriteBrew.put("beerID", string);
-                   
-                    List <String> aa2 = new ArrayList <String>();
-                   
-                   
-                    aa2.add(user.getUsername());
-                    favoriteBrew.saveInBackground();
-                   
-                   
-                    //userName2.add("userName", aa.toString());
-                    ParseObject beerClass = new ParseObject("BeerClass");
-                    beerClass.put("userName", user.getUsername());
-                    beerClass.put("Name", beerLabel.getText().toString());
-                    beerClass.put("beerID", beersID);
-                   
-                   
-                    beerClass.put("userDislikes", user.getUsername());
-                   
-                    beerClass.saveInBackground();
+	                     favoriteBrew.put("userName", currentUser.getUsername());
+	                     favoriteBrew.put("beerName", beerLabel.getText().toString());
+	                    favoriteBrew.put("beerID", string);
+	                    
+	                   
+	                    favoriteBrew.saveInBackground();
+	                   
+	                   
+	                    //userName2.add("userName", aa.toString());
+	                    ParseObject beerClass = new ParseObject("BeerClass");
+	                   beerClass.put("userDislikes", currentUser.getUsername());
+	                   beerClass.put("beerName", beerLabel.getText().toString());
+	                    beerClass.put("beerID", string);
+					}
 				}
 			});
 			return rootView;
